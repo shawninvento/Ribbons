@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="Ribbons.Data/Ribbons.Data.csproj" />
+  <Project Path="Ribbons.TestConsole/Ribbons.TestConsole.csproj" />
+  <Project Path="Ribbons.Users/Ribbons.Users.csproj" />
+  <Project Path="Ribbons/Ribbons.csproj" />
+</Solution>
