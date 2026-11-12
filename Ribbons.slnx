@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Ribbons.Data/Ribbons.Data.csproj" Id="160f8b0a-ba6e-4f6a-b789-7b1ef45280dd" />
+  <Project Path="Ribbons.TestConsole/Ribbons.TestConsole.csproj" />
+  <Project Path="Ribbons/Ribbons.csproj" />
+</Solution>
