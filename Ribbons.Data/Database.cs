@@ -28,6 +28,9 @@ namespace Ribbons.Data
             }
         }
 
-
+        public void SetConnectionString(string connectionString)
+        {
+            Database.SetConnectionString(connectionString);
+        }
     }
 }

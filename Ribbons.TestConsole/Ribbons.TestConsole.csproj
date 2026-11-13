@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Ribbons.Users\Ribbons.Users.csproj" />
     <ProjectReference Include="..\Ribbons\Ribbons.csproj" />
   </ItemGroup>
 
