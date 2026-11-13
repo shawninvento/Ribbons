@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Ribbons.Data;
 
 namespace Ribbons.Users.Data
 {
-    internal interface IUserDbProvider
-    {
-    }
+    public interface IUserDbProvider : IDatabaseProvider<UserDb> { }
 }

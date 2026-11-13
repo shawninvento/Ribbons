@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace Ribbons.Data
@@ -10,19 +9,21 @@ namespace Ribbons.Data
     {
         protected TDatabaseConfig Configuration { get; }
 
-        protected DatabaseProvider(IOptions<TDatabaseConfig> configuration)
+        protected DatabaseProvider(TDatabaseConfig configuration)
         {
-            Configuration = configuration.Value;
+            Configuration = configuration;
         }
 
         public TDatabase GetDatabase()
         {
-            return CreateInstance();
+            TDatabase instance = CreateInstance();
+            instance.SetConnectionString(Configuration.ConnectionString);
+            return instance;
         }
 
         public async Task<TDatabase> GetDatabaseAsync()
         {
-            return await Task.FromResult(CreateInstance());
+            return await Task.FromResult(GetDatabase());
         }
 
         public void Migrate()

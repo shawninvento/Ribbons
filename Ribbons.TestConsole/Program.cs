@@ -1,13 +1,23 @@
-﻿using System;
+﻿using Ribbons.Data;
+using Ribbons.Users.Data;
+using System;
+using System.Threading.Tasks;
 
 namespace Ribbons.TestConsole
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            string str = "Hello World";
-            Console.WriteLine(str.IsNullOrWhiteSpace());
+            UserDbConfig dbConfig = new()
+            {
+                DatabaseEngine = DatabaseEngine.MsSql,
+                ConnectionString = "server=localhost;database=ribbons_user;trustservercertificate=true;integrated security=true"
+            };
+            
+            IUserDbProvider dbProvider = new UserDbProvider(dbConfig);
+            
+            await dbProvider.MigrateAsync();
         }
     }
 }
