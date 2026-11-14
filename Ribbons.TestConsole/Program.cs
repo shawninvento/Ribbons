@@ -20,20 +20,7 @@ namespace Ribbons.TestConsole
             
             await dbProvider.MigrateAsync();
 
-            UserDb db = await dbProvider.GetDatabaseAsync();
-
-            for (int i = 0; i < 100; i++)
-            {
-                User user = new()
-                {
-                    UserName = 0.ToString().PadLeft(10, '0'),
-                    CreatedDate = DateTime.Now
-                };
-
-                db.Users.Add(user);
-            }
-
-            await db.SaveChangesAsync();
+            
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ribbons.Users
+namespace Ribbons.Users.Data
 {
     [Table("t_user_password")]
     public class UserPassword
@@ -17,5 +17,7 @@ namespace Ribbons.Users
         [Column("password_hash")]
         [MaxLength(512)]
         public byte[] PasswordHash { get; set; }
+
+        public User User { get; set; }
     }
 }

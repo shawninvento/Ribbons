@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ribbons.Users
+namespace Ribbons.Users.Data
 {
     /// <summary>
     /// <see cref="UserDomain"/> is intended create user scoping.

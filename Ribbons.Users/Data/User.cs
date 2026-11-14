@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Ribbons.Users
+namespace Ribbons.Users.Data
 {
     [Table("t_user")]
     [Index(nameof(UserDomainId))]
@@ -18,7 +18,7 @@ namespace Ribbons.Users
         public long UserId { get; set; }
 
         [Column("user_domain_id")]
-        public long? UserDomainId { get; set; }
+        public long UserDomainId { get; set; }
 
         [Column("user_name")]
         [Required]
@@ -30,5 +30,6 @@ namespace Ribbons.Users
         public DateTime CreatedDate { get; set; }
 
         public UserDomain UserDomain { get; set; }
+        public UserPassword UserPassword { get; set; }
     }
 }

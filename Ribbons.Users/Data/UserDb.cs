@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ribbons.Data;
+using System;
 
 namespace Ribbons.Users.Data
 {
@@ -13,14 +14,16 @@ namespace Ribbons.Users.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Entity<User>()
-                .HasIndex(x => new { x.UserDomainId, x.UserName })
-                .IsUnique()
-                .HasFilter(null);
-
+                .HasOneToMany<UserDomain, User>(x => x.Users, x => x.UserDomain, x => x.UserDomainId)
+                .HasOneToOne<User, UserPassword>(x => x.UserPassword, x => x.User, x => x.UserId);
 
             modelBuilder
-                .HasOneToMany<UserDomain, User>(x => x.Users, x => x.UserDomain, x => x.UserDomainId);
+                .HasData(new UserDomain
+                {
+                    UserDomainId = 1,
+                    DomainName = "default",
+                    CreatedDate = DateTime.MinValue
+                });
         }
     }
 }
