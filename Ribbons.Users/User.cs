@@ -6,7 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Ribbons.Users
 {
     [Table("t_user")]
-    [Index(nameof(UserName), IsUnique = true)]
+    [Index(nameof(UserDomainId))]
+    [Index(nameof(UserName))]
+    [Index(nameof(UserDomainId), nameof(UserName), IsUnique = true)]
     [Index(nameof(CreatedDate))]
     public class User
     {
@@ -14,6 +16,9 @@ namespace Ribbons.Users
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long UserId { get; set; }
+
+        [Column("user_domain_id")]
+        public long? UserDomainId { get; set; }
 
         [Column("user_name")]
         [Required]
@@ -23,5 +28,7 @@ namespace Ribbons.Users
         [Column("created_date")]
         [Required]
         public DateTime CreatedDate { get; set; }
+
+        public UserDomain UserDomain { get; set; }
     }
 }

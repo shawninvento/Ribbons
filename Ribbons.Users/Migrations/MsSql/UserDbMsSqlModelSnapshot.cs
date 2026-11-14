@@ -16,7 +16,7 @@ partial class UserDbMsSqlModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261113075004_Init";
+    public override string LastMigrationId => "20261113174645_Init";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -40,6 +40,10 @@ partial class UserDbMsSqlModelSnapshot : ModelSnapshot
                     .HasColumnType("datetime2")
                     .HasColumnName("created_date");
 
+                b.Property<long?>("UserDomainId")
+                    .HasColumnType("bigint")
+                    .HasColumnName("user_domain_id");
+
                 b.Property<string>("UserName")
                     .IsRequired()
                     .HasMaxLength(255)
@@ -50,10 +54,62 @@ partial class UserDbMsSqlModelSnapshot : ModelSnapshot
 
                 b.HasIndex("CreatedDate");
 
-                b.HasIndex("UserName")
-                    .IsUnique();
+                b.HasIndex("UserDomainId");
+
+                b.HasIndex("UserName");
+
+                b.HasIndex("UserDomainId", "UserName")
+                    .IsUnique()
+                    .HasFilter("[user_domain_id] IS NOT NULL");
 
                 b.ToTable("t_user");
+            });
+
+        modelBuilder.Entity("Ribbons.Users.UserDomain", b =>
+            {
+                var userDomainId = b.Property<long>("UserDomainId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("bigint")
+                    .HasColumnName("user_domain_id");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(userDomainId);
+
+                b.Property<DateTime>("CreatedDate")
+                    .HasColumnType("datetime2")
+                    .HasColumnName("created_date");
+
+                b.Property<string>("Description")
+                    .HasMaxLength(255)
+                    .HasColumnType("nvarchar(255)")
+                    .HasColumnName("description");
+
+                b.Property<string>("DomainName")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("nvarchar(255)")
+                    .HasColumnName("domain_name");
+
+                b.HasKey("UserDomainId");
+
+                b.HasIndex("DomainName")
+                    .IsUnique();
+
+                b.ToTable("t_user_domain");
+            });
+
+        modelBuilder.Entity("Ribbons.Users.User", b =>
+            {
+                b.HasOne("Ribbons.Users.UserDomain", "UserDomain")
+                    .WithMany("Users")
+                    .HasForeignKey("UserDomainId")
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                b.Navigation("UserDomain");
+            });
+
+        modelBuilder.Entity("Ribbons.Users.UserDomain", b =>
+            {
+                b.Navigation("Users");
             });
 #pragma warning restore 612, 618
     }

@@ -15,4 +15,9 @@
     <ProjectReference Include="..\Ribbons.Data\Ribbons.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+    <Folder Include="Management\" />
+  </ItemGroup>
+
 </Project>
