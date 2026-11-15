@@ -1,11 +1,12 @@
-﻿using Ribbons.Data;
+﻿using Microsoft.Extensions.Options;
+using Ribbons.Data;
 using System;
 
 namespace Ribbons.Users.Data
 {
     public class UserDbProvider : DatabaseProvider<UserDb, UserDbConfig>, IUserDbProvider
     {
-        public UserDbProvider(UserDbConfig configuration) : base(configuration) { }
+        public UserDbProvider(IOptions<UserDbConfig> configuration) : base(configuration) { }
 
         protected override UserDb CreateInstance()
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace Ribbons.Data
@@ -9,9 +10,9 @@ namespace Ribbons.Data
     {
         protected TDatabaseConfig Configuration { get; }
 
-        protected DatabaseProvider(TDatabaseConfig configuration)
+        protected DatabaseProvider(IOptions<TDatabaseConfig> options)
         {
-            Configuration = configuration;
+            Configuration = options.Value;
         }
 
         public TDatabase GetDatabase()

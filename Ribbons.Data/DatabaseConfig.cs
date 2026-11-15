@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Options;
-
-namespace Ribbons.Data
+﻿namespace Ribbons.Data
 {
-    public class DatabaseConfig : IOptions<DatabaseConfig>
+    public abstract class DatabaseConfig
     {
         /// <summary>
         /// The database engine you intend to use
@@ -20,6 +18,5 @@ namespace Ribbons.Data
         /// Database connection string
         /// </summary>
         public string ConnectionString { get; set; }
-        public DatabaseConfig Value => this;
     }
 }
