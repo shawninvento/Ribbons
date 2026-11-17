@@ -11,11 +11,11 @@ namespace Ribbons.Users.Data
         public long UserId { get; set; }
 
         [Column("password_salt")]
-        [MaxLength(512)]
+        [MaxLength(64)]
         public byte[] PasswordSalt { get; set; }
 
         [Column("password_hash")]
-        [MaxLength(512)]
+        [MaxLength(64)]
         public byte[] PasswordHash { get; set; }
 
         public User User { get; set; }

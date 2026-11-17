@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Ribbons
@@ -37,6 +38,11 @@ namespace Ribbons
         public static string ToJson(this object obj, bool indent = false)
         {
             return JsonSerializer.Serialize(obj, indent ? IndentedOptions : DefaultOptions);
+        }
+
+        public static byte[] UTF8Bytes(this string str)
+        {
+            return Encoding.UTF8.GetBytes(str);
         }
     }
 }

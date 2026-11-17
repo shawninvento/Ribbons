@@ -8,6 +8,7 @@ namespace Ribbons.Users.Data
     {
         public DbSet<User> Users { get; set; }
         public DbSet<UserDomain> UserDomains { get; set; }
+        public DbSet<UserPassword> UserPasswords { get; set; }
 
         protected UserDb(DatabaseEngine databaseEngine) : base(databaseEngine) { }
 

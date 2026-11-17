@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ribbons.Users.Migrations.MsSql;
 
 /// <inheritdoc />
-public partial class _20261115061238_Init : Migration
+public partial class _20261117152146_Init : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,8 +52,8 @@ public partial class _20261115061238_Init : Migration
             columns: table => new
             {
                 user_id = table.Column<long>(type: "bigint", nullable: false),
-                password_salt = table.Column<byte[]>(type: "varbinary(512)", maxLength: 512, nullable: true),
-                password_hash = table.Column<byte[]>(type: "varbinary(512)", maxLength: 512, nullable: true)
+                password_salt = table.Column<byte[]>(type: "varbinary(64)", maxLength: 64, nullable: true),
+                password_hash = table.Column<byte[]>(type: "varbinary(64)", maxLength: 64, nullable: true)
             },
             constraints: table =>
             {
