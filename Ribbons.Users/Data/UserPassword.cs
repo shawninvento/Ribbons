@@ -18,6 +18,10 @@ namespace Ribbons.Users.Data
         [MaxLength(64)]
         public byte[] PasswordHash { get; set; }
 
+        [Column("iterations")]
+        [Required]
+        public int Iterations { get; set; }
+
         public User User { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ribbons.Cryptography;
 using Ribbons.Users.Constants;
 using Ribbons.Users.Data;
 using Ribbons.Users.Model;
@@ -11,6 +12,7 @@ namespace Ribbons.Users
 {
     public sealed class UserManager : IUserManager
     {
+        private const int Iterations = 600000;
         private UserDb UserDb { get; }
 
         public UserManager(IUserDbProvider userDbProvider)
@@ -103,11 +105,19 @@ namespace Ribbons.Users
                     };
                 }
 
+                request.Password.ComputePbkdf2(600000, out byte[] passwordSalt, out byte[] passwordHash);
+
                 User user = new()
                 {
                     UserDomainId = userDomain.UserDomainId,
                     UserName = request.UserName,
-                    CreatedDate = DateTime.Now
+                    CreatedDate = DateTime.Now,
+                    UserPassword = new()
+                    {
+                        PasswordSalt = passwordSalt,
+                        PasswordHash = passwordHash,
+                        Iterations = Iterations
+                    }
                 };
 
                 await UserDb.AddAsync(user);

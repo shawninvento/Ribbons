@@ -12,8 +12,8 @@ using Ribbons.Users.Data;
 namespace Ribbons.Users.Migrations.MsSql;
 
 [DbContext(typeof(UserDbMsSql))]
-[Migration("20261117152146_Init")]
-partial class _20261117152146_Init
+[Migration("20261117165120_Init")]
+partial class _20261117165120_Init
 {
     /// <inheritdoc />
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -107,6 +107,10 @@ partial class _20261117152146_Init
                 b.Property<long>("UserId")
                     .HasColumnType("bigint")
                     .HasColumnName("user_id");
+
+                b.Property<int>("Iterations")
+                    .HasColumnType("int")
+                    .HasColumnName("iterations");
 
                 b.Property<byte[]>("PasswordHash")
                     .HasMaxLength(64)

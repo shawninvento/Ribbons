@@ -16,7 +16,7 @@ partial class UserDbMsSqlModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261117152146_Init";
+    public override string LastMigrationId => "20261117165120_Init";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -109,6 +109,10 @@ partial class UserDbMsSqlModelSnapshot : ModelSnapshot
                 b.Property<long>("UserId")
                     .HasColumnType("bigint")
                     .HasColumnName("user_id");
+
+                b.Property<int>("Iterations")
+                    .HasColumnType("int")
+                    .HasColumnName("iterations");
 
                 b.Property<byte[]>("PasswordHash")
                     .HasMaxLength(64)
