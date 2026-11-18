@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ribbons.Users.Constants;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ribbons.Users.Data
 {
-    [Table("t_user")]
+    [Table(TableNames.User)]
     [Index(nameof(UserDomainId))]
     [Index(nameof(UserName))]
     [Index(nameof(UserDomainId), nameof(UserName), IsUnique = true)]

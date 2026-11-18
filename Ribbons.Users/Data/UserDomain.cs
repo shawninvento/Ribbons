@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Ribbons.Users.Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,7 +13,7 @@ namespace Ribbons.Users.Data
     /// Each <see cref="UserDomain"/> will have its own collection of unique users. This behavior would allow username reuse across multiple organization accounts.
     /// The <see cref="UserDomain"/> is not mandatory. Some applications will not require user scoping of this fashion, in which case <see cref="User.UserDomainId"/> will be null
     /// </summary>
-    [Table("t_user_domain")]
+    [Table(TableNames.UserDomain)]
     [Index(nameof(DomainName), IsUnique = true)]
     public class UserDomain
     {

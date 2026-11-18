@@ -23,49 +23,14 @@ namespace Ribbons.TestConsole
 
             IUserManager userManager = new UserManager(dbProvider);
 
-            CreateUserDomainResponse nullDomainName = await userManager.CreateUserDomainAsync(new CreateUserDomainRequest
+            CreateUserResponse user = await userManager.CreateUserAsync(new CreateUserRequest
             {
-                DomainName = null
-            });
-
-            Console.WriteLine(nullDomainName.ToJson());
-
-            CreateUserDomainResponse insufficientCharacters = await userManager.CreateUserDomainAsync(new CreateUserDomainRequest
-            {
-                DomainName = "1"
-            });
-
-            Console.WriteLine(insufficientCharacters.ToJson());
-
-            CreateUserDomainResponse domainWithInvalidCharacters = await userManager.CreateUserDomainAsync(new CreateUserDomainRequest
-            {
-                DomainName = "!@#"
-            });
-
-            Console.WriteLine(domainWithInvalidCharacters.ToJson());
-
-            CreateUserDomainResponse compositeErrors = await userManager.CreateUserDomainAsync(new CreateUserDomainRequest
-            {
-                DomainName = "1!"
-            });
-
-            Console.WriteLine(compositeErrors.ToJson());
-
-            CreateUserResponse userInDefaultDomain = await userManager.CreateUserAsync(new CreateUserRequest
-            {
-                UserName = Guid.NewGuid().ToString(),
+                DomainName = "default",
+                UserName = "admin",
                 Password = "ASD123!@#"
             });
 
-            Console.WriteLine(userInDefaultDomain.ToJson());
-
-            CreateUserResponse createDuplicateUser = await userManager.CreateUserAsync(new CreateUserRequest
-            {
-                UserName = "fixed",
-                Password = "ASD123!@#"
-            });
-
-            Console.Write(createDuplicateUser.ToJson());
+            Console.WriteLine(user.ToJson());
         }
     }
 }

@@ -20,6 +20,11 @@ namespace Ribbons.Users
             UserDb = userDbProvider.GetDatabase();
         }
 
+        /// <summary>
+        /// Creates a new user domain
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<CreateUserDomainResponse> CreateUserDomainAsync(CreateUserDomainRequest request)
         {
             try
@@ -69,6 +74,11 @@ namespace Ribbons.Users
             }
         }
 
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public async Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request)
         {
             try
@@ -137,6 +147,34 @@ namespace Ribbons.Users
                     Message = ex.Message
                 };
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public async Task<AuthenticateUserResponse> AuthenticateUserAsync(AuthenticateUserRequest request)
+        {
+            try
+            {
+                if (!request.TryValidateObject(out List<ValidationError> validationErrors))
+                {
+                    return new()
+                    {
+                        ValidationErrors = validationErrors
+                    };
+                }
+
+                User user = await UserDb.Users.FirstOrDefaultAsync(x=>x.UserName == request.UserName && x.UserDomain.DomainName == request.DomainName);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return new();
         }
     }
 }

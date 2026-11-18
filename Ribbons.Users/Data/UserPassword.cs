@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Ribbons.Users.Constants;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ribbons.Users.Data
 {
-    [Table("t_user_password")]
+    [Table(TableNames.UserPassword)]
     public class UserPassword
     {
         [Column("user_id")]

@@ -1,18 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Ribbons.Users.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ribbons.Users.Model
 {
     public sealed class CreateUserRequest
     {
-        [StringLength(255)]
-        [RegularExpression(@"^[A-Za-z0-9_-]+$", ErrorMessage = "{0} may contain only letters, numbers, underscores, and dashes.")]
+        [StringLength(DataConstraints.DomainNameMaxLength)]
+        [RegularExpression(DataConstraints.DomainNamePattern, ErrorMessage = "domain_name_invalid_format")]
         public string DomainName { get; set; }
 
         [Required]
-        [StringLength(255)]
+        [StringLength(DataConstraints.UserNameMaxLength, MinimumLength = DataConstraints.UserNameMinLength)]
+        [RegularExpression(DataConstraints.UserNamePattern)]
         public string UserName { get; set; }
 
         [Required]
+        [StringLength(128, MinimumLength = 3)]
         public string Password { get; set; }
     }
 }
