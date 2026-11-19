@@ -1,6 +1,6 @@
 ﻿using Ribbons.Data;
 using Ribbons.Users;
-using Ribbons.Users.Data;
+using Ribbons.Users.Db;
 using Ribbons.Users.Model;
 using System;
 using System.Threading.Tasks;
@@ -31,6 +31,15 @@ namespace Ribbons.TestConsole
             });
 
             Console.WriteLine(user.ToJson());
+
+            AuthenticateUserResponse authenticateUserResponse = await userManager.AuthenticateUserAsync(new AuthenticateUserRequest
+            {
+                DomainName = "default",
+                UserName = "admin",
+                Password = "ASD123!@"
+            });
+
+            Console.WriteLine(authenticateUserResponse.ToJson());
         }
     }
 }

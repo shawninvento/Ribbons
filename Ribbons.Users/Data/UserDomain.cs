@@ -17,24 +17,24 @@ namespace Ribbons.Users.Data
     [Index(nameof(DomainName), IsUnique = true)]
     public class UserDomain
     {
-        [Column("user_domain_id")]
+        [Column(ColumnNames.UserDomainId)]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long UserDomainId { get; set; }
 
-        [Column("domain_name")]
+        [Column(ColumnNames.DomainName)]
         [Required]
         [StringLength(255)]
         public string DomainName { get; set; }
 
-        [Column("description")]
+        [Column(ColumnNames.Description)]
         [StringLength(255)]
         public string Description { get; set; }
 
-        [Column("created_date")]
+        [Column(ColumnNames.CreatedDate)]
         [Required]
         public DateTime CreatedDate { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

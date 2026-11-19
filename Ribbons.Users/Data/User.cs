@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Ribbons.Users.Constants;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,7 +31,8 @@ namespace Ribbons.Users.Data
         [Required]
         public DateTime CreatedDate { get; set; }
 
-        public UserDomain UserDomain { get; set; }
-        public UserPassword UserPassword { get; set; }
+        public virtual UserDomain UserDomain { get; set; }
+        public virtual UserPassword UserPassword { get; set; }
+        public virtual ICollection<UserSession> UserSessions { get; set; }
     }
 }

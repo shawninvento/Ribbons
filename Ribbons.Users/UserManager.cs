@@ -2,6 +2,7 @@
 using Ribbons.Cryptography;
 using Ribbons.Users.Constants;
 using Ribbons.Users.Data;
+using Ribbons.Users.Db;
 using Ribbons.Users.Model;
 using Ribbons.Validation;
 using System;
@@ -126,7 +127,7 @@ namespace Ribbons.Users
                     {
                         PasswordSalt = passwordSalt,
                         PasswordHash = passwordHash,
-                        Iterations = Iterations
+                        PasswordIterations = Iterations
                     }
                 };
 
@@ -163,18 +164,44 @@ namespace Ribbons.Users
                 {
                     return new()
                     {
+                        Status = AuthenticateUserStatus.Invalid,
                         ValidationErrors = validationErrors
                     };
                 }
 
-                User user = await UserDb.Users.FirstOrDefaultAsync(x=>x.UserName == request.UserName && x.UserDomain.DomainName == request.DomainName);
+                User user = await UserDb.Users
+                    .Include(x => x.UserPassword)
+                    .FirstOrDefaultAsync(x => x.UserName == request.UserName && x.UserDomain.DomainName == request.DomainName);
+
+                if (user == null)
+                {
+                    return new()
+                    {
+                        Status = AuthenticateUserStatus.UserNotFound
+                    };
+                }
+
+                if (!request.Password.TryValidatePbkdf2(user.UserPassword.PasswordIterations, user.UserPassword.PasswordSalt, user.UserPassword.PasswordHash))
+                {
+                    return new()
+                    {
+                        Status = AuthenticateUserStatus.CredentialsInvalid
+                    };
+                }
+
+                return new()
+                {
+                    Status = AuthenticateUserStatus.Ok
+                };
             }
             catch (Exception ex)
             {
-
+                return new()
+                {
+                    Status = AuthenticateUserStatus.Error,
+                    Message = ex.Message
+                };
             }
-
-            return new();
         }
     }
 }

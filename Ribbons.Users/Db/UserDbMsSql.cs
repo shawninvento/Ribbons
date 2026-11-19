@@ -1,6 +1,6 @@
 ﻿using Ribbons.Data;
 
-namespace Ribbons.Users.Data
+namespace Ribbons.Users.Db
 {
     public class UserDbMsSql : UserDb
     {

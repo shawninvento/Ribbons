@@ -2,7 +2,7 @@
 using Ribbons.Data;
 using System;
 
-namespace Ribbons.Users.Data
+namespace Ribbons.Users.Db
 {
     public class UserDbProvider : DatabaseProvider<UserDb, UserDbConfig>, IUserDbProvider
     {
