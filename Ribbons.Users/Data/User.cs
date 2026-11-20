@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ribbons.Users.Constants;
+using Ribbons.Users.Data.Definitions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,20 +14,20 @@ namespace Ribbons.Users.Data
     [Index(nameof(CreatedDate))]
     public class User
     {
-        [Column("user_id")]
+        [Column(ColumnNames.UserId)]
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long UserId { get; set; }
 
-        [Column("user_domain_id")]
+        [Column(ColumnNames.UserDomainId)]
         public long UserDomainId { get; set; }
 
-        [Column("user_name")]
+        [Column(ColumnNames.UserName)]
         [Required]
-        [StringLength(255)]
+        [StringLength(ColumnConstraints.UserNameLength)]
         public string UserName { get; set; }
 
-        [Column("created_date")]
+        [Column(ColumnNames.CreatedDate)]
         [Required]
         public DateTime CreatedDate { get; set; }
 

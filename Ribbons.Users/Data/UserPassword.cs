@@ -1,4 +1,4 @@
-﻿using Ribbons.Users.Constants;
+﻿using Ribbons.Users.Data.Definitions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -7,21 +7,21 @@ namespace Ribbons.Users.Data
     [Table(TableNames.UserPassword)]
     public class UserPassword
     {
-        [Column("user_id")]
+        [Column(ColumnNames.UserId)]
         [Key]
         public long UserId { get; set; }
 
-        [Column("password_salt")]
-        [MaxLength(64)]
+        [Column(ColumnNames.PasswordSalt)]
+        [MaxLength(ColumnConstraints.PasswordSaltLength)]
         public byte[] PasswordSalt { get; set; }
 
-        [Column("password_hash")]
-        [MaxLength(64)]
+        [Column(ColumnNames.PasswordHash)]
+        [MaxLength(ColumnConstraints.PasswordHashLength)]
         public byte[] PasswordHash { get; set; }
 
-        [Column("password_iterations")]
+        [Column(ColumnNames.PasswordHashIterations)]
         [Required]
-        public int PasswordIterations { get; set; }
+        public int PasswordHashIterations { get; set; }
 
         public User User { get; set; }
     }

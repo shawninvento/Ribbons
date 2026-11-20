@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ribbons.Users.Constants;
+using Ribbons.Users.Data.Definitions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,11 +24,11 @@ namespace Ribbons.Users.Data
 
         [Column(ColumnNames.DomainName)]
         [Required]
-        [StringLength(255)]
+        [StringLength(ColumnConstraints.DomainNameLength)]
         public string DomainName { get; set; }
 
         [Column(ColumnNames.Description)]
-        [StringLength(255)]
+        [StringLength(ColumnConstraints.DescriptionLength)]
         public string Description { get; set; }
 
         [Column(ColumnNames.CreatedDate)]

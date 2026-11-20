@@ -32,21 +32,12 @@ namespace Ribbons.Users
             {
                 if (!request.TryValidateObject(out List<ValidationError> validationErrors))
                 {
-                    return new()
-                    {
-                        Status = CreateUserDomainStatus.Invalid,
-                        Message = $"Failed to create user domain. {validationErrors.Count} validation error(s) detected",
-                        ValidationErrors = validationErrors
-                    };
+                    return new(CreateUserDomainStatus.Invalid, $"Failed to create user domain. {validationErrors.Count} validation errors(s) detected", validationErrors);
                 }
 
                 if (await UserDb.UserDomains.AnyAsync(x => x.DomainName == request.DomainName))
                 {
-                    return new()
-                    {
-                        Status = CreateUserDomainStatus.Duplicate,
-                        Message = $"{request.DomainName} is already in use"
-                    };
+                    return new(CreateUserDomainStatus.Duplicate, $"Failed to create user domain. {request.DomainName} is already in use");
                 }
 
                 UserDomain userDomain = new()
@@ -59,19 +50,11 @@ namespace Ribbons.Users
                 await UserDb.AddAsync(userDomain);
                 await UserDb.SaveChangesAsync();
 
-                return new()
-                {
-                    Status = CreateUserDomainStatus.Ok,
-                    Message = $"User domain {userDomain.DomainName} created"
-                };
+                return new(CreateUserDomainStatus.Ok, $"User domain {userDomain.DomainName} created");
             }
             catch (Exception ex)
             {
-                return new()
-                {
-                    Status = CreateUserDomainStatus.Error,
-                    Message = ex.Message
-                };
+                return new(CreateUserDomainStatus.Error, ex.Message);
             }
         }
 
@@ -86,12 +69,7 @@ namespace Ribbons.Users
             {
                 if (!request.TryValidateObject(out List<ValidationError> validationErrors))
                 {
-                    return new()
-                    {
-                        Status = CreateUserStatus.Invalid,
-                        Message = $"Failed to create user. {validationErrors.Count} validation error(s) detected",
-                        ValidationErrors = validationErrors
-                    };
+                    return new(CreateUserStatus.Invalid, $"Failed to create user. {validationErrors.Count} validation error(s) detected", validationErrors);
                 }
 
                 string domainName = request.DomainName.IsNullOrWhiteSpace() ? ReservedUserDomains.Default : request.DomainName;
@@ -100,20 +78,12 @@ namespace Ribbons.Users
 
                 if (userDomain == null)
                 {
-                    return new()
-                    {
-                        Status = CreateUserStatus.UserDomainNotFound,
-                        Message = $"Failed to create user. Domain {domainName} not found"
-                    };
+                    return new(CreateUserStatus.UserDomainNotFound, $"Failed to create user. Domain {domainName} not found");
                 }
 
                 if (await UserDb.Users.AnyAsync(x => x.UserDomainId == userDomain.UserDomainId && x.UserName == request.UserName))
                 {
-                    return new()
-                    {
-                        Status = CreateUserStatus.Duplicate,
-                        Message = $"Failed to create user. User {request.UserName} is already exists for domain {userDomain.DomainName}"
-                    };
+                    return new(CreateUserStatus.Duplicate, $"Failed to create user. User {request.UserName} is already exists for domain {userDomain.DomainName}");
                 }
 
                 request.Password.ComputePbkdf2(600000, out byte[] passwordSalt, out byte[] passwordHash);
@@ -127,26 +97,18 @@ namespace Ribbons.Users
                     {
                         PasswordSalt = passwordSalt,
                         PasswordHash = passwordHash,
-                        PasswordIterations = Iterations
+                        PasswordHashIterations = Iterations
                     }
                 };
 
                 await UserDb.AddAsync(user);
                 await UserDb.SaveChangesAsync();
 
-                return new()
-                {
-                    Status = CreateUserStatus.Ok,
-                    Message = $"User {user.UserName} created under domain {userDomain.DomainName}"
-                };
+                return new(CreateUserStatus.Ok, $"User {user.UserName} created under domain {userDomain.DomainName}");
             }
             catch (Exception ex)
             {
-                return new()
-                {
-                    Status = CreateUserStatus.Error,
-                    Message = ex.Message
-                };
+                return new(CreateUserStatus.Error, ex.Message);
             }
         }
 
@@ -162,46 +124,36 @@ namespace Ribbons.Users
             {
                 if (!request.TryValidateObject(out List<ValidationError> validationErrors))
                 {
-                    return new()
-                    {
-                        Status = AuthenticateUserStatus.Invalid,
-                        ValidationErrors = validationErrors
-                    };
+                    return new(AuthenticateUserStatus.Invalid, $"Failed to authenticate user. {validationErrors.Count} validation error(s) detected", validationErrors);
                 }
 
+                string domainName = request.DomainName.IsNullOrWhiteSpace() ? ReservedUserDomains.Default : request.DomainName;
+                
                 User user = await UserDb.Users
                     .Include(x => x.UserPassword)
-                    .FirstOrDefaultAsync(x => x.UserName == request.UserName && x.UserDomain.DomainName == request.DomainName);
+                    .FirstOrDefaultAsync(x => x.UserName == request.UserName && x.UserDomain.DomainName == domainName);
 
                 if (user == null)
                 {
-                    return new()
-                    {
-                        Status = AuthenticateUserStatus.UserNotFound
-                    };
+                    return new(AuthenticateUserStatus.CredentialsInvalid, $"Failed to authenticate user. Credentials invalid");
                 }
 
-                if (!request.Password.TryValidatePbkdf2(user.UserPassword.PasswordIterations, user.UserPassword.PasswordSalt, user.UserPassword.PasswordHash))
+                if (!request.Password.TryValidatePbkdf2(user.UserPassword.PasswordHashIterations, user.UserPassword.PasswordSalt, user.UserPassword.PasswordHash))
                 {
-                    return new()
-                    {
-                        Status = AuthenticateUserStatus.CredentialsInvalid
-                    };
+                    return new(AuthenticateUserStatus.CredentialsInvalid, $"Failed to authenticate user. Credentials invalid");
                 }
 
-                return new()
-                {
-                    Status = AuthenticateUserStatus.Ok
-                };
+                return new(AuthenticateUserStatus.Ok, "User authenticated");
             }
             catch (Exception ex)
             {
-                return new()
-                {
-                    Status = AuthenticateUserStatus.Error,
-                    Message = ex.Message
-                };
+                return new(AuthenticateUserStatus.Error, ex.Message);
             }
+        }
+
+        public Task<string> CreateUserSessionAsync(long userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

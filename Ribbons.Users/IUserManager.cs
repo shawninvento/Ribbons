@@ -8,5 +8,6 @@ namespace Ribbons.Users
         Task<CreateUserDomainResponse> CreateUserDomainAsync(CreateUserDomainRequest request);
         Task<CreateUserResponse> CreateUserAsync(CreateUserRequest request);
         Task<AuthenticateUserResponse> AuthenticateUserAsync(AuthenticateUserRequest request);
+        Task<string> CreateUserSessionAsync(long userId);
     }
 }

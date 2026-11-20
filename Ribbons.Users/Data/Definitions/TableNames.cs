@@ -1,4 +1,4 @@
-﻿namespace Ribbons.Users.Constants
+﻿namespace Ribbons.Users.Data.Definitions
 {
     public static class TableNames
     {
